@@ -37,6 +37,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"/>
+<link rel="manifest" href="manifest.json"/>
 
 <!-- Structured data (SEO – helyi vállalkozás) -->
 <script type="application/ld+json">
@@ -86,7 +87,7 @@
           "surface-bright": "#FDFBF7",
           "on-tertiary-container": "#bdbfc0",
           "on-surface": "#241F16",
-          "secondary": "#9C8A63",
+          "secondary": "#6E5F42",
           "surface-container": "#f1e9db",
           "inverse-surface": "#2f3133",
           "secondary-container": "#dbe3ec",
@@ -236,8 +237,39 @@
   .card-media-wrap img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
   .card-media-wrap:hover img { transform: scale(1.08); }
 
+  /* Sparkle / shimmer twinkle – kozmetikai csillogás */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
+    50% { opacity: 1; transform: scale(1) rotate(8deg); }
+  }
+  .sparkle {
+    position: absolute;
+    color: #C9A961;
+    pointer-events: none;
+    animation: twinkle 3.4s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(201, 169, 97, 0.6));
+  }
+
+  /* Fényes "highlighter" csillanás gombokon hoverre */
+  .shine-btn { position: relative; overflow: hidden; }
+  .shine-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    pointer-events: none;
+  }
+  .shine-btn:hover::after { animation: shineSweep 0.85s ease; }
+  @keyframes shineSweep {
+    100% { left: 130%; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .hero-anim, .float-blob-1, .float-blob-2, .card-media-wrap img {
+    .reveal, .hero-anim, .float-blob-1, .float-blob-2, .card-media-wrap img, .sparkle, .shine-btn::after {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
@@ -268,7 +300,7 @@
       <a class="text-on-surface hover:text-primary transition-colors font-label-md text-label-md hover:bg-primary/5 px-3 py-2 rounded-md" href="#kapcsolat">Kapcsolat</a>
     </div>
 
-    <a href="tel:+36205929777" class="hidden md:inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-6 py-2 rounded-full hover:bg-primary-container transition-colors shadow-md">
+    <a href="tel:+36205929777" class="shine-btn hidden md:inline-flex items-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-6 py-2 rounded-full hover:bg-primary-container transition-colors shadow-md">
       <span class="material-symbols-outlined text-lg">call</span>
       Hívás
     </a>
@@ -297,6 +329,15 @@
   <!-- Hero Section -->
   <section class="flex flex-col items-center justify-center text-center space-y-6 md:space-y-8 min-h-[70vh] md:min-h-[614px] relative rounded-3xl overflow-hidden px-4">
     <div class="absolute inset-0 -z-10 bg-cover bg-center" style="background-image: linear-gradient(rgba(250,245,238,0.88), rgba(250,245,238,0.96)), url('https://images.pexels.com/photos/5632324/pexels-photo-5632324.jpeg?auto=compress&cs=tinysrgb&w=1600');"></div>
+
+    <!-- Csillogó szikrák -->
+    <span class="material-symbols-outlined sparkle text-2xl md:text-3xl" style="top: 8%; left: 12%; animation-delay: 0s;">auto_awesome</span>
+    <span class="material-symbols-outlined sparkle text-lg md:text-xl" style="top: 18%; right: 14%; animation-delay: 0.9s;">auto_awesome</span>
+    <span class="material-symbols-outlined sparkle text-xl md:text-2xl" style="bottom: 22%; left: 8%; animation-delay: 1.7s;">auto_awesome</span>
+    <span class="material-symbols-outlined sparkle text-lg md:text-xl" style="top: 42%; right: 8%; animation-delay: 2.3s;">auto_awesome</span>
+    <span class="material-symbols-outlined sparkle text-base md:text-lg" style="bottom: 12%; right: 20%; animation-delay: 1.2s;">auto_awesome</span>
+    <span class="material-symbols-outlined sparkle text-base md:text-lg" style="top: 30%; left: 22%; animation-delay: 2.8s;">auto_awesome</span>
+
     <h1 class="font-display-lg text-display-lg text-primary glow-text flex flex-col items-center hero-anim hero-anim-1">
       <span class="text-5xl sm:text-6xl md:text-8xl italic">Anna</span>
       <span class="text-3xl sm:text-4xl md:text-5xl mt-2">Fénypont</span>
@@ -309,7 +350,7 @@
       Az Anna Fénypont Kozmetikában szeretettel várlak az alábbi szolgáltatásokkal.
     </p>
     <div class="flex flex-col sm:flex-row gap-4 pt-4 hero-anim hero-anim-4">
-      <a href="tel:+36205929777" class="inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-3 rounded-full hover:bg-primary-container hover:scale-105 active:scale-95 transition-all shadow-md">
+      <a href="tel:+36205929777" class="shine-btn inline-flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md text-label-md px-8 py-3 rounded-full hover:bg-primary-container hover:scale-105 active:scale-95 transition-all shadow-md">
         <span class="material-symbols-outlined text-lg">call</span>
         Időpont egyeztetés
       </a>
@@ -632,7 +673,7 @@
           <p class="font-headline-md text-headline-md italic text-primary text-sm">Professzionális törődés, ragyogó eredmény</p>
         </div>
       </div>
-      <div class="flex items-center justify-center gap-4 mt-8 text-primary/50">
+      <div class="flex items-center justify-center gap-4 mt-8 text-on-surface-variant">
         <span class="material-symbols-outlined text-xl">local_florist</span>
         <span class="tracking-widest uppercase text-xs">Anna Fénypont Kozmetika</span>
         <span class="material-symbols-outlined text-xl">local_florist</span>
@@ -670,7 +711,7 @@
     <h2 class="font-headline-lg text-headline-lg text-white italic mb-6 max-w-4xl mx-auto px-4">Minden szolgáltatás során arra törekszem, hogy igényes környezetben, odafigyeléssel és jó hangulatban teljen az itt töltött idő.</h2>
     <p class="font-display-lg text-display-lg text-white italic mt-10 md:mt-12">Szeretettel várlak! <span class="text-primary-fixed">♡</span></p>
     <div class="mt-8">
-      <a href="tel:+36205929777" class="inline-flex items-center justify-center gap-2 bg-white text-primary font-label-md text-label-md px-8 py-3 rounded-full hover:bg-primary-fixed hover:scale-105 active:scale-95 transition-all shadow-md">
+      <a href="tel:+36205929777" class="shine-btn inline-flex items-center justify-center gap-2 bg-white text-primary font-label-md text-label-md px-8 py-3 rounded-full hover:bg-primary-fixed hover:scale-105 active:scale-95 transition-all shadow-md">
         <span class="material-symbols-outlined text-lg">call</span>
         Időpontot kérek
       </a>
@@ -705,7 +746,7 @@
     </div>
   </div>
 
-  <div class="text-center mt-10 md:mt-12 font-caption text-caption text-on-surface-variant/70 space-y-1">
+  <div class="text-center mt-10 md:mt-12 font-caption text-caption text-on-surface-variant space-y-1">
     <p>© <span id="year">2026</span> Anna Fénypont Kozmetika. Minden jog fenntartva.</p>
     <p>Fotók: <a href="https://www.pexels.com" target="_blank" rel="noopener" class="underline hover:text-primary">Pexels</a></p>
   </div>
