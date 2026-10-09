@@ -86,6 +86,12 @@ h2 em,h1 em{font-family:var(--script);font-style:normal;font-weight:400;color:va
 .links a:hover::after,.links a.active::after{width:100%}
 .top .btn{white-space:nowrap;padding:11px 20px;min-height:44px;font-size:12px}
 .top .cta-d{display:none}
+.burger{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.9);color:var(--blue);cursor:pointer}
+.mnav{position:fixed;inset:var(--nav-h) 0 auto 0;z-index:59;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 20px 30px -20px rgba(16,29,87,.4);padding:8px var(--gutter) 20px;display:none;flex-direction:column}
+.mnav.open{display:flex}
+.mnav a{padding:15px 4px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mnav a.active{color:var(--blue)}
+.mnav .btn{margin-top:16px;border:0;color:#fff;letter-spacing:.04em;text-align:center;justify-content:center}
 
 /* hero */
 .hero{padding-top:calc(var(--nav-h) + clamp(28px,6vw,72px));padding-bottom:clamp(48px,7vw,96px);overflow:hidden}
@@ -248,6 +254,7 @@ footer a:hover{color:var(--blue)}
   .tabbar{display:none}
   .links{display:flex}
   .top .cta-d{display:inline-flex}
+  .burger,.mnav{display:none!important}
   .hero-grid{grid-template-columns:1.05fr .95fr;gap:80px}
   .hero-visual{margin-inline:0}
   .stats{max-width:560px}
@@ -282,8 +289,19 @@ footer a:hover{color:var(--blue)}
       <a href="#kapcsolat" data-s="kapcsolat">Kapcsolat</a>
     </nav>
     <a class="btn btn-blue cta-d" href="tel:+36205929777"><span class="ms">call</span>06/20 592-9777</a>
+    <button type="button" class="burger" id="burger" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="mnav"><span class="ms">menu</span></button>
   </div>
 </header>
+<nav class="mnav" id="mnav" aria-label="Mobil menü">
+  <a href="#fooldal" data-s="fooldal">Főoldal</a>
+  <a href="#szolgaltatasok" data-s="szolgaltatasok">Szolgáltatások</a>
+  <a href="#ujdonsag" data-s="ujdonsag">Újdonság</a>
+  <a href="#galeria" data-s="galeria">Galéria</a>
+  <a href="#gyik" data-s="gyik">GYIK</a>
+  <a href="#kapcsolat" data-s="kapcsolat">Kapcsolat</a>
+  <a href="adatvedelem.html">Adatvédelem</a>
+  <a class="btn btn-blue" href="tel:+36205929777"><span class="ms">call</span>Hívás: 06/20 592-9777</a>
+</nav>
 
 <main>
 <section class="hero" id="fooldal">
@@ -575,11 +593,16 @@ footer a:hover{color:var(--blue)}
     var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setActive(e.target.id)})},{rootMargin:'-45% 0px -50% 0px'});
     ids.forEach(function(i){var n=document.getElementById(i);if(n)so.observe(n)});
   }
+  var bg=document.getElementById('burger'),mn=document.getElementById('mnav'),bi=bg.querySelector('.ms');
+  function tg(o){mn.classList.toggle('open',o);bg.setAttribute('aria-expanded',o);bg.setAttribute('aria-label',o?'Menü bezárása':'Menü megnyitása');bi.textContent=o?'close':'menu'}
+  bg.addEventListener('click',function(){tg(!mn.classList.contains('open'))});
+  mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){tg(false)})});
+  addEventListener('resize',function(){if(innerWidth>=960)tg(false)});
   var lb=document.getElementById('lb'),lbi=document.getElementById('lbimg');
   document.querySelectorAll('.gal button').forEach(function(b){b.addEventListener('click',function(){lbi.src=b.dataset.full;lbi.alt=b.querySelector('img').alt;lb.classList.add('open')})});
   function close(){lb.classList.remove('open')}
   lb.addEventListener('click',close);
-  addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  addEventListener('keydown',function(e){if(e.key==='Escape'){close();tg(false)}});
   var wg=document.querySelector('.wax-grid');
   function wx(){if(wg)wg.style.gridTemplateColumns=innerWidth>=720?'1fr 1fr':'1fr'}
   wx();addEventListener('resize',wx);
